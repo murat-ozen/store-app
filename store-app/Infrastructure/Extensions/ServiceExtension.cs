@@ -10,7 +10,7 @@ namespace store_app.Infrastructure.Extensions
             services.AddDbContext<RepositoryContext>(options =>
             {
                 options.UseSqlite(configuration.GetConnectionString("sqlconnection"),
-                b => b.MigrationsAssembly("StoreApp"));
+                b => b.MigrationsAssembly("store-app"));
             });
         }
     }
