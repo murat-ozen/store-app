@@ -8,6 +8,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.ConfigureDbContext(builder.Configuration);
+builder.Services.ConfigureSession();
+builder.Services.ConfigureRepositoryRegistration();
+builder.Services.ConfigureServiceRegistration();
+builder.Services.ConfigureRouting();
+
 
 
 builder.Services.AddAutoMapper(typeof(Program));
@@ -25,18 +30,27 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-app.MapAreaControllerRoute(
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapAreaControllerRoute(
         name: "Admin",
         areaName: "Admin",
-        pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
+        pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}"
+    );
 
-app.MapRazorPages();
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}"
+    );
+
+    endpoints.MapRazorPages();
+});
+
+app.ConfigureAndCheckMigration();
+app.ConfigureLocalization();
 
 app.Run();
