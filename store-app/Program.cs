@@ -5,7 +5,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 builder.Services.ConfigureDbContext(builder.Configuration);
@@ -25,7 +24,6 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
@@ -38,10 +36,6 @@ app.MapAreaControllerRoute(
         name: "Admin",
         areaName: "Admin",
         pattern: "Admin/{controller=Dashboard}/{action=Index}/{id?}");
-
-app.MapControllerRoute(
-        name: "default",
-        pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 
