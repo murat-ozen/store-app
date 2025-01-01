@@ -1,4 +1,4 @@
-@model IQueryable<Product>
+@model ProductListViewModel
 
 @section Footer
 {
@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-9">
         <div class="row">
-            @foreach (Product prd in Model)
+            @foreach (Product prd in Model.Products)
             {
                 <partial name="_ProductCard" model="@prd" />
             }
