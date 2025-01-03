@@ -5,6 +5,7 @@ using Repositories.Contracts;
 using Services.Contracts;
 using Services;
 using store_app.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace store_app.Infrastructure.Extensions
 {
@@ -15,9 +16,26 @@ namespace store_app.Infrastructure.Extensions
             services.AddDbContext<RepositoryContext>(options =>
             {
                 options.UseSqlite(configuration.GetConnectionString("sqlconnection"),
-                b => b.MigrationsAssembly("store-app"));
+                    b => b.MigrationsAssembly("store-app"));
+                
+                options.EnableSensitiveDataLogging(true);
             });
         }
+
+        public static void ConfigureIdentity(this IServiceCollection services)
+        {
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = false;
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequiredLength = 6;
+            })
+            .AddEntityFrameworkStores<RepositoryContext>();
+        }
+
         public static void ConfigureSession(this IServiceCollection services)
         {
             services.AddDistributedMemoryCache();
